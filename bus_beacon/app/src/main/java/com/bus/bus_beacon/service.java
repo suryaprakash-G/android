@@ -46,7 +46,8 @@ public class service extends Service implements LocationListener {
     private SensorManager sensorManager;
     private Sensor sensor;
     private SensorEventListener gel;
-
+    private long lastUpdate;
+    private float g[3];
     int sm;
     IBinder bnd;
     boolean alrb;
@@ -109,6 +110,21 @@ public class service extends Service implements LocationListener {
         locationManager.requestLocationUpdates(provider, 400, 1, this);
 
     }
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            getAccelerometer(event);
+        }
+
+    }
+    private void getAccelerometer(SensorEvent event) {
+        float[] values = event.values;
+        // Movement
+        g[0] = values[0];
+        g[1] = values[1];
+        g[2] = values[2];
+        }
+    }
     private void DisplayLoggingInfo() {
         Log.d("location updated" ,"entered DisplayLoggingInfo");
 
@@ -141,6 +157,9 @@ public void send(){
         postData.put("b", "123");
         postData.put("la", String.valueOf(lat));
         postData.put("lo", String.valueOf(lng));
+        postData.put("g1",g[0]);
+        postData.put("g2",g[1]);
+        postData.put("g3",g[2]);
         postData.put("t",t );
         writer.write(postData.toString());
         writer.flush();
