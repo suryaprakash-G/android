@@ -1,7 +1,6 @@
 package com.bus.bus_beacon;
 
 import android.Manifest;
-import android.app.Application;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +21,6 @@ import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -36,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.HttpsURLConnection;
 
 
-public class service extends Service implements LocationListener {
+public class service extends Service implements LocationListener,SensorEventListener{
     HttpURLConnection client;
     public static final String BROADCAST_ACTION = "com.websmithing.broadcasttest.displayevent";
     private final Handler handler = new Handler();
@@ -47,7 +45,7 @@ public class service extends Service implements LocationListener {
     private Sensor sensor;
     private SensorEventListener gel;
     private long lastUpdate;
-    private float g[3];
+    private float g[];
     int sm;
     IBinder bnd;
     boolean alrb;
@@ -82,7 +80,7 @@ public class service extends Service implements LocationListener {
             public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
             }
-        }
+        };
         intent = new Intent(BROADCAST_ACTION);
 //            ip= intent.getExtras().getString("s");
 
@@ -117,6 +115,12 @@ public class service extends Service implements LocationListener {
         }
 
     }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
     private void getAccelerometer(SensorEvent event) {
         float[] values = event.values;
         // Movement
@@ -124,7 +128,7 @@ public class service extends Service implements LocationListener {
         g[1] = values[1];
         g[2] = values[2];
         }
-    }
+
     private void DisplayLoggingInfo() {
         Log.d("location updated" ,"entered DisplayLoggingInfo");
 
@@ -150,16 +154,16 @@ public void send(){
         String t = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
         client.setRequestMethod("POST");
         client.setRequestProperty("Key","Value");
-        client.ser("Content-Type","application/Json");
+        client.setRequestProperty("Content-Type","application/Json");
         client.setDoOutput(true);
         OutputStreamWriter writer = new OutputStreamWriter(client.getOutputStream());
         Map<String, String> postData = new HashMap<>();
         postData.put("b", "123");
         postData.put("la", String.valueOf(lat));
         postData.put("lo", String.valueOf(lng));
-        postData.put("g1",g[0]);
-        postData.put("g2",g[1]);
-        postData.put("g3",g[2]);
+        postData.put("g1",String.valueOf(g[0]));
+        postData.put("g2",String.valueOf(g[1]));
+        postData.put("g3",String.valueOf(g[2]));
         postData.put("t",t );
         writer.write(postData.toString());
         writer.flush();
@@ -184,44 +188,6 @@ public void send(){
     }
 
 }
-    /*
-public void sendata(){
-    JSONObject postDataParams = new JSONObject();
-    postDataParams.put("b", "123");
-    postDataParams.put("la", lat);
-    postDataParams.put("lo", lng);
-    postDataParams.put("t","time" );
-    URL url = new URL(r_url);
-
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-    conn.setReadTimeout(20000);
-    conn.setConnectTimeout(20000);
-    conn.setRequestMethod("POST");
-    conn.setDoInput(true);
-    conn.setDoOutput(true);
-
-    OutputStream os = conn.getOutputStream();
-    BufferedWriter writer = new BufferedWriter( new OutputStreamWriter(os, "UTF-8"));
-    writer.write(encodeParams(postDataParams));
-    writer.flush();
-    writer.close();
-    os.close();
-
-    int responseCode=conn.getResponseCode();
-    if (responseCode == HttpsURLConnection.HTTP_OK) {
-
-        BufferedReader in=new BufferedReader( new InputStreamReader(conn.getInputStream()));
-        StringBuffer sb = new StringBuffer("");
-        String line="";
-        while((line = in.readLine()) != null) {
-            sb.append(line);
-            break;
-        }
-        in.close();
-        return sb.toString();
-    }
-    return null;
-}*/
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
 
