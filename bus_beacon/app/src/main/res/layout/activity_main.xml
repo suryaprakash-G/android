@@ -54,7 +54,7 @@
         android:id="@+id/TextView03"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="60dp"
         android:text="Longitute: "
         android:textColor="#FF0E00"
         android:textSize="20dip"
@@ -79,11 +79,11 @@
         android:id="@+id/stp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="196dp"
+        android:layout_marginBottom="52dp"
         android:text="stop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -93,10 +93,10 @@
         android:text="start"
         app:layout_constraintBottom_toTopOf="@+id/stp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TextView03"
-        app:layout_constraintVertical_bias="0.757" />
+        app:layout_constraintVertical_bias="0.914" />
 
     <EditText
         android:id="@+id/ip"
@@ -108,8 +108,35 @@
         android:text="192.168.29.58"
         app:layout_constraintBottom_toTopOf="@+id/str"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Gyroscope"
+        android:textColor="#FF0E00"
+        android:textSize="20dip"
+        app:layout_constraintBottom_toTopOf="@+id/ip"
+        app:layout_constraintEnd_toStartOf="@+id/gt"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TextView03" />
+        app:layout_constraintTop_toBottomOf="@+id/TextView03"
+        app:layout_constraintVertical_bias="0.173" />
+
+    <TextView
+        android:id="@+id/gt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:text="X=0.0  y=0.0  Z=0.0"
+        android:textColor="#4CAF50"
+        android:textSize="20dip"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TextView04"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
