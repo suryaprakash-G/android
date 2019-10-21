@@ -45,7 +45,7 @@ public class service extends Service implements LocationListener,SensorEventList
     private Sensor sensor;
     private SensorEventListener gel;
     private long lastUpdate;
-    private float g[];
+    private float g[]={0,0,0};
     int sm;
     IBinder bnd;
     boolean alrb;
@@ -110,7 +110,7 @@ public class service extends Service implements LocationListener,SensorEventList
     }
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+        if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             getAccelerometer(event);
         }
 
@@ -127,6 +127,7 @@ public class service extends Service implements LocationListener,SensorEventList
         g[0] = values[0];
         g[1] = values[1];
         g[2] = values[2];
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         }
 
     private void DisplayLoggingInfo() {
@@ -134,6 +135,9 @@ public class service extends Service implements LocationListener,SensorEventList
 
         intent.putExtra("la",lat);
         intent.putExtra("lo",lng);
+        intent.putExtra("g1",String.valueOf(g[0]));
+        intent.putExtra("g2",String.valueOf(g[1]));
+        intent.putExtra("g3",String.valueOf(g[2]));
         sendBroadcast(intent);
     }
     public void onLocationChanged(Location location) {
