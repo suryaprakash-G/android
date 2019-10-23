@@ -20,6 +20,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private TextView latituteField;
     private TextView longitudeField;
+    private TextView gyr;
     public double lng,lat;
     public void str(){ startService(new Intent(this, service.class));}
     public void stp(){ stopService(new Intent(this, service.class));}
@@ -40,6 +41,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         str=(Button)findViewById(R.id.str);
         stp=(Button)findViewById(R.id.stp);
         ip=(EditText)findViewById(R.id.ip);
+        gyr=(TextView) findViewById(R.id.gt);
         str.setOnClickListener(this);
         stp.setOnClickListener(this);
         latituteField = (TextView) findViewById(R.id.TextView02);
@@ -57,11 +59,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
     };
    // public static void up(){new MainActivity().updatel();}
     public void updatel(Intent intent) {
-        double la=0.0,lo=0.0;
+        double la=0.0,lo=0.0,g1=0.0,g2=0.0,g3=0.0;
        double lat = intent.getDoubleExtra("la",la);
        double lng = intent.getDoubleExtra("lo",lo);
+       double  G1=intent.getDoubleExtra("g1",g1);
+        double  G2=intent.getDoubleExtra("g2",g2);
+        double  G3=intent.getDoubleExtra("g3",g3);
         latituteField.setText(String.valueOf(lat));
         longitudeField.setText(String.valueOf(lng));
+        gyr.setText("X="+G1+"  Y="+G2+"  Z"+g3);
     }
 
     @Override
@@ -74,7 +80,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.stp:
 
-                unregisterReceiver(broadcastReceiver);
+              //  unregisterReceiver(broadcastReceiver);
                 stopService(new Intent(this, service.class));
                 break;
 

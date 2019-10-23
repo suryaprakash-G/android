@@ -102,6 +102,7 @@
         android:id="@+id/ip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="56dp"
         android:autoText="false"
         android:ems="10"
         android:inputType="textPersonName"

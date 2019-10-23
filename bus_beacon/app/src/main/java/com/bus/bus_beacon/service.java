@@ -51,6 +51,7 @@ public class service extends Service implements LocationListener,SensorEventList
     boolean alrb;
     String ip="192.168.29.58:3006";
     public double lng,lat;
+    private Sensor gyro;
     public double getLng() {
         return lng;
     }
@@ -70,9 +71,14 @@ public class service extends Service implements LocationListener,SensorEventList
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        gyro = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        sensorManager.registerListener(this, gyro, SensorManager.SENSOR_DELAY_GAME);
         gel=new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
+               // if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+                getAccelerometer(event);
+                  //}
 
             }
 
@@ -81,6 +87,7 @@ public class service extends Service implements LocationListener,SensorEventList
 
             }
         };
+
         intent = new Intent(BROADCAST_ACTION);
 //            ip= intent.getExtras().getString("s");
 
@@ -110,9 +117,9 @@ public class service extends Service implements LocationListener,SensorEventList
     }
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+       // if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             getAccelerometer(event);
-        }
+      //  }
 
     }
 
@@ -127,7 +134,7 @@ public class service extends Service implements LocationListener,SensorEventList
         g[0] = values[0];
         g[1] = values[1];
         g[2] = values[2];
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+      //  System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         }
 
     private void DisplayLoggingInfo() {
@@ -144,7 +151,7 @@ public class service extends Service implements LocationListener,SensorEventList
         lat = (double) (location.getLatitude());
         lng = (double) (location.getLongitude());
         DisplayLoggingInfo();
-        System.out.println("lat " + getLat() + "\nlong "+getLng());
+        System.out.println("lat " + getLat() + "\nlong "+getLng()+"\ngyr "+g[0]+g[1]+g[2]);
         send();
 
     }
@@ -212,6 +219,7 @@ public void send(){
     public boolean onUnbind(Intent intent) {
         Toast.makeText(this, "service unbound",
                 Toast.LENGTH_LONG).show();
+        sensorManager.unregisterListener(this, gyro);
         return alrb;
     }
 
